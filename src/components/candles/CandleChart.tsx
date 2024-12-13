@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart, ColorType, IChartApi, Time } from 'lightweight-charts';
-import { Candle } from '../types/exchange';
+import { Candle } from '../types/candle';
 import { format } from 'date-fns';
-import { LoadingSpinner } from './LoadingSpinner';
-import { ErrorMessage } from './ErrorMessage';
+import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 interface CandleChartProps {
   data: Candle[];

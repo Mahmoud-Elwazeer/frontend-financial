@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { Exchange, Candle } from '../types/exchange';
+import { Exchange } from '../types/exchange';
+import { Candle } from '../types/candle';
 import { FilterOptions } from '../types/filters';
 import { CompanyMetadata } from '../types/metadata';
 import { ApiResponse, PaginatedResponse } from '../types/api';
 
 const api = axios.create({  
-  baseURL: 'https://51.20.89.154/api/v1'
+  baseURL: 'http://51.20.89.154/api/v1'
 });
 
 export const getExchanges = async (filters: {

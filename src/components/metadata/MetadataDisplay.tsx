@@ -5,8 +5,8 @@ import {
 } from 'lucide-react';
 import { formatCurrency, formatLargeNumber, calculatePercentChange } from '../../utils/formatters';
 import { CompanyMetadata } from '../../types/metadata';
-import { LoadingSpinner } from '../LoadingSpinner';
-import { ErrorMessage } from '../ErrorMessage';
+import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 interface MetadataDisplayProps {
   data: CompanyMetadata;
