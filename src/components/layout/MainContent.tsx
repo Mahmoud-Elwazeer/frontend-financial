@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Exchange } from '../../types/exchange';
 import { ExchangeList } from '../exchanges/ExchangeList';
 import { CandleChart } from '../candles/CandleChart';
+import { AreaChart } from '../charts/AreaChart';
+import { ChartToggle } from '../charts/ChartToggle';
 import { MetadataDisplay } from '../metadata/MetadataDisplay';
 
 interface MainContentProps {
@@ -29,6 +31,8 @@ export const MainContent: React.FC<MainContentProps> = ({
   isCandlesError,
   isMetadataError,
 }) => {
+  const [chartType, setChartType] = useState<'candle' | 'area'>('candle');
+
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -43,14 +47,25 @@ export const MainContent: React.FC<MainContentProps> = ({
         {selectedExchange && (
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                {selectedExchange.name} ({selectedExchange.symbol}) - Candle Data
-              </h2>
-              <CandleChart 
-                data={candles} 
-                isLoading={isCandlesLoading}
-                isError={isCandlesError}
-              />
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {selectedExchange.name} ({selectedExchange.symbol})
+                </h2>
+                <ChartToggle chartType={chartType} onToggle={setChartType} />
+              </div>
+              {chartType === 'candle' ? (
+                <CandleChart 
+                  data={candles} 
+                  isLoading={isCandlesLoading}
+                  isError={isCandlesError}
+                />
+              ) : (
+                <AreaChart 
+                  data={candles} 
+                  isLoading={isCandlesLoading}
+                  isError={isCandlesError}
+                />
+              )}
             </div>
           </div>
         )}

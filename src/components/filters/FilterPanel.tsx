@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getFilterOptions } from '../../services/api';
 import { MultiSelect } from './MultiSelect';
 import { FilterState } from '../../types/filters';
-import { RefreshCw, AlertCircle } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 interface FilterPanelProps {
   filters: FilterState;
@@ -16,7 +16,6 @@ interface FilterPanelProps {
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   filters,
   onFilterChange,
-  onApply,
   onReset,
   hasResults,
 }) => {
@@ -34,11 +33,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   if (isLoading) {
     return (
-      <div className="animate-pulse bg-white rounded-lg p-4">
-        <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+      <div className="animate-pulse bg-white dark:bg-gray-800 rounded-lg p-4">
+        <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
         <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-10 bg-gray-200 rounded"></div>
+            <div key={i} className="h-10 bg-gray-200 dark:bg-gray-700 rounded"></div>
           ))}
         </div>
       </div>
@@ -56,10 +55,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   ].filter((section) => section.options.length > 0);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-
-      {/* Multi-Select Filters Section */}
-      <div className="bg-white rounded-lg shadow-sm p-6 md:w-3/4">
+    <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 md:w-3/4 border border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {sections.map((section) => (
             <MultiSelect
@@ -73,32 +70,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
       </div>
 
-      {/* Buttons Section */}
-      {/* <div className="md:w-1/4 space-y-6">
-      <button
-          onClick={onApply}
-          className="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Apply Filters
-        </button>
+      <div className="md:w-1/4 flex flex-col justify-center space-y-4">
         <button
           onClick={onReset}
-          className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 bg-white rounded-lg border hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           <RefreshCw className="h-4 w-4" />
           Reset Filters
         </button>
-      </div> */}
-      <div className="md:w-1/4 flex flex-col justify-center space-y-6">
-      <button
-        onClick={onReset}
-        className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 bg-white rounded-lg border hover:bg-gray-50 transition-colors"
-      >
-        <RefreshCw className="h-4 w-4" />
-        Reset Filters
-      </button>
+      </div>
     </div>
-    </div>
-    
   );
 };

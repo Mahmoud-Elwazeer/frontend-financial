@@ -4,17 +4,17 @@ import { Candle } from '../../types/candle';
 import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { useTheme } from '../../contexts/ThemeContext';
-import { CandleChartTooltip } from './CandleChartTooltip';
-import { useChartConfig } from './useChartConfig';
+import { AreaChartTooltip } from './AreaChartTooltip';
+import { useChartConfig } from '../candles/useChartConfig';
 import ReactDOMServer from 'react-dom/server'; 
 
-interface CandleChartProps {
+interface AreaChartProps {
   data: Candle[];
   isLoading: boolean;
   isError: boolean;
 }
 
-export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isError }) => {
+export const AreaChart: React.FC<AreaChartProps> = ({ data, isLoading, isError }) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -27,28 +27,20 @@ export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isErr
         ...chartConfig,
         width: chartContainerRef.current.clientWidth,
         height: 400,
-        crosshair: {
-          mode: 0,
-        },
       });
 
-      const candlestickSeries = chart.addCandlestickSeries({
-        upColor: '#10b981',
-        downColor: '#ef4444',
-        borderVisible: true,
-        wickUpColor: '#10b981',
-        wickDownColor: '#ef4444',
+      const areaSeries = chart.addAreaSeries({
+        lineColor: isDark ? '#60a5fa' : '#3b82f6',
+        topColor: isDark ? 'rgba(96, 165, 250, 0.4)' : 'rgba(59, 130, 246, 0.4)',
+        bottomColor: isDark ? 'rgba(96, 165, 250, 0.0)' : 'rgba(59, 130, 246, 0.0)',
       });
 
-      const chartData = data.map((candle) => ({
+      const areaData = data.map((candle) => ({
         time: candle.dateTime.split('T')[0] as Time,
-        open: candle.startPrice,
-        high: Math.max(candle.highestPrice, candle.startPrice + 0.0001),
-        low: Math.min(candle.lowestPrice, candle.startPrice - 0.0001),
-        close: candle.endPrice,
+        value: candle.endPrice,
       }));
 
-      candlestickSeries.setData(chartData);
+      areaSeries.setData(areaData);
       chart.timeScale().fitContent();
 
       chart.subscribeCrosshairMove(param => {
@@ -59,7 +51,7 @@ export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isErr
             tooltipRef.current.innerHTML = '';
             const tooltipContent = document.createElement('div');
             tooltipContent.innerHTML = ReactDOMServer.renderToString(
-              <CandleChartTooltip candle={candle} isDark={isDark} />
+              <AreaChartTooltip candle={candle} isDark={isDark} />
             );
             tooltipRef.current.appendChild(tooltipContent);
 
@@ -98,11 +90,11 @@ export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isErr
   }
 
   if (isError) {
-    return <ErrorMessage message="No candle data available for this exchange" />;
+    return <ErrorMessage message="No data available for this exchange" />;
   }
 
   if (data.length === 0) {
-    return <ErrorMessage message="No candle data available for this exchange" />;
+    return <ErrorMessage message="No data available for this exchange" />;
   }
 
   return (

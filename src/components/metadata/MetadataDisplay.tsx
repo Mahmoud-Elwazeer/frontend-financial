@@ -3,7 +3,7 @@ import {
   Building2, Globe, Briefcase, Users, Calendar, Phone, Link2,
   DollarSign, TrendingUp, BarChart3, PieChart, Activity
 } from 'lucide-react';
-import { formatCurrency, formatLargeNumber, calculatePercentChange } from '../../utils/formatters';
+import { formatCurrency, formatLargeNumber } from '../../utils/formatters';
 import { CompanyMetadata } from '../../types/metadata';
 import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
@@ -14,22 +14,15 @@ interface MetadataDisplayProps {
   isError: boolean;
 }
 
-export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoading, isError  }) => {
+export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoading, isError }) => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
-  if (isError) {
-    // return <ErrorMessage message="No Metadata data available for this exchange" />;
-    return;
+  if (isError || !data) {
+    return null;
   }
 
-  // if (data.length === 0) {
-  //   return <ErrorMessage message="No candle data available for this exchange" />;
-  // }
-
-  console.log(data)
-  
   const {
     name,
     symbol,
@@ -43,27 +36,26 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     marketCapitalization,
     highlights,
     technicals,
-    valuation,
   } = data;
 
   return (
     <div className="space-y-6">
       {/* Header Section */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
         <div className="flex items-start gap-6">
           {data.logoURL && (
             <img 
               src={data.logoURL} 
               alt={`${name} logo`}
-              className="w-20 h-20 object-contain"
+              className="w-20 h-20 object-contain bg-white rounded-lg"
             />
           )}
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-gray-900">{name}</h1>
-              <span className="text-sm text-gray-500">({symbol})</span>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{name}</h1>
+              <span className="text-sm text-gray-500 dark:text-gray-400">({symbol})</span>
             </div>
-            <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600">
+            <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
               <div className="flex items-center gap-1">
                 <Building2 className="h-4 w-4" />
                 {sector}
@@ -78,10 +70,12 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
               </div>
               <div className="flex items-center gap-1">
                 <Globe className="h-4 w-4" />
-                {/* {addressDetails.country} */}
+                {addressDetails?.country}
               </div>
             </div>
-            <p className="mt-4 text-sm text-gray-600 line-clamp-3">{description}</p>
+            <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+              {description}
+            </p>
           </div>
         </div>
       </div>
@@ -89,118 +83,109 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Market Stats */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-blue-500" />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <BarChart3 className="h-5 w-5 text-primary-500 dark:text-primary-400" />
             Market Statistics
           </h2>
           <div className="space-y-4">
-            <div>
-              <div className="text-sm text-gray-600">Market Cap</div>
-              <div className="text-lg font-semibold">
-                {formatCurrency(marketCapitalization.value)}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">P/E Ratio</div>
-              <div className="text-lg font-semibold">
-                {/* {highlights.peRatio.toFixed(2)} */}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Beta</div>
-              <div className="text-lg font-semibold">
-                {/* {technicals.beta.toFixed(2)} */}
-              </div>
-            </div>
+            <MetricItem
+              label="Market Cap"
+              value={formatCurrency(marketCapitalization?.value)}
+            />
+            <MetricItem
+              label="P/E Ratio"
+              value={highlights?.peRatio?.toFixed(2)}
+            />
+            <MetricItem
+              label="Beta"
+              value={technicals?.beta?.toFixed(2)}
+            />
           </div>
         </div>
 
         {/* Technical Indicators */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Activity className="h-5 w-5 text-blue-500" />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <Activity className="h-5 w-5 text-primary-500 dark:text-primary-400" />
             Technical Indicators
           </h2>
           <div className="space-y-4">
-            <div>
-              <div className="text-sm text-gray-600">52 Week Range</div>
-              <div className="text-lg font-semibold">
-                {/* {technicals['52WeekLow'].toFixed(2)} - {technicals['52WeekHigh'].toFixed(2)} */}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">50 Day MA</div>
-              <div className="text-lg font-semibold">
-                {/* {technicals['50DayMA'].toFixed(2)} */}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">200 Day MA</div>
-              <div className="text-lg font-semibold">
-                {/* {technicals['200DayMA'].toFixed(2)} */}
-              </div>
-            </div>
+            <MetricItem
+              label="52 Week Range"
+              value={technicals && `${technicals['52WeekLow']?.toFixed(2)} - ${technicals['52WeekHigh']?.toFixed(2)}`}
+            />
+            <MetricItem
+              label="50 Day MA"
+              value={technicals?.['50DayMA']?.toFixed(2)}
+            />
+            <MetricItem
+              label="200 Day MA"
+              value={technicals?.['200DayMA']?.toFixed(2)}
+            />
           </div>
         </div>
 
-        {/* Financial Highlights */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <PieChart className="h-5 w-5 text-blue-500" />
-            Financial Highlights
+        {/* Contact Information */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+            Contact Information
           </h2>
           <div className="space-y-4">
-            <div>
-              <div className="text-sm text-gray-600">Revenue (TTM)</div>
-              <div className="text-lg font-semibold">
-                {/* {formatCurrency(highlights.revenueTtm)} */}
+            {addressDetails && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  Address
+                </h3>
+                <p className="text-gray-900 dark:text-gray-100">
+                  {addressDetails.street}<br />
+                  {addressDetails.city}, {addressDetails.state} {addressDetails.zip}<br />
+                  {addressDetails.country}
+                </p>
               </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Profit Margin</div>
-              <div className="text-lg font-semibold">
-                {/* {(highlights.profitMargin * 100).toFixed(2)}% */}
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">Operating Margin</div>
-              <div className="text-lg font-semibold">
-                {/* {(highlights.operatingMarginTtm * 100).toFixed(2)}% */}
-              </div>
+            )}
+            <div className="space-y-2">
+              {phone && (
+                <a
+                  href={`tel:${phone}`}
+                  className="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+                >
+                  <Phone className="h-4 w-4" />
+                  {phone}
+                </a>
+              )}
+              {webUrl && (
+                <a
+                  href={webUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300"
+                >
+                  <Link2 className="h-4 w-4" />
+                  {webUrl}
+                </a>
+              )}
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
 
-      {/* Contact Information */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-sm font-medium text-gray-600 mb-2">Address</h3>
-            <p className="text-gray-900">
-              {/* {addressDetails.street}<br /> */}
-              {/* {addressDetails.city}, {addressDetails.state} {addressDetails.zip}<br /> */}
-              {/* {addressDetails.country} */}
-            </p>
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-gray-400" />
-              <a href={`tel:${phone}`} className="text-blue-600 hover:text-blue-800">
-                {phone}
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link2 className="h-4 w-4 text-gray-400" />
-              <a href={webUrl} target="_blank" rel="noopener noreferrer" 
-                className="text-blue-600 hover:text-blue-800">
-                {webUrl}
-              </a>
-            </div>
-          </div>
-        </div>
+interface MetricItemProps {
+  label: string;
+  value?: string | number | null;
+}
+
+const MetricItem: React.FC<MetricItemProps> = ({ label, value }) => {
+  if (!value) return null;
+  
+  return (
+    <div>
+      <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
+      <div className="text-lg font-semibold text-gray-900 dark:text-white">
+        {value}
       </div>
     </div>
   );
