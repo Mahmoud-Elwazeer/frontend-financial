@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Section */}
-          <div className="footer-section">
+          <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               About Financial Exchanges
             </h3>
@@ -17,28 +17,28 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="footer-section">
+          <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
                   Documentation
                 </a>
               </li>
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
                   API Reference
                 </a>
               </li>
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className="footer-link">
+                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
                   Privacy Policy
                 </a>
               </li>
@@ -46,28 +46,28 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Contact Section */}
-          <div className="footer-section">
+          <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Connect With Us
             </h3>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="footer-icon"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                 aria-label="GitHub"
               >
                 <Github className="h-6 w-6" />
               </a>
               <a
                 href="#"
-                className="footer-icon"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                 aria-label="Twitter"
               >
                 <Twitter className="h-6 w-6" />
               </a>
               <a
                 href="mailto:contact@example.com"
-                className="footer-icon"
+                className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                 aria-label="Email"
               >
                 <Mail className="h-6 w-6" />
