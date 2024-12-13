@@ -74,7 +74,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       </div>
 
       {/* Buttons Section */}
-      <div className="md:w-1/4 space-y-3">
+      {/* <div className="md:w-1/4 space-y-6">
       <button
           onClick={onApply}
           className="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -88,7 +88,17 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           <RefreshCw className="h-4 w-4" />
           Reset Filters
         </button>
-      </div>
+      </div> */}
+      <div className="md:w-1/4 flex flex-col justify-center space-y-6">
+      <button
+        onClick={onReset}
+        className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 bg-white rounded-lg border hover:bg-gray-50 transition-colors"
+      >
+        <RefreshCw className="h-4 w-4" />
+        Reset Filters
+      </button>
     </div>
+    </div>
+    
   );
 };
