@@ -6,7 +6,7 @@ import { CompanyMetadata } from '../types/metadata';
 import { ApiResponse, PaginatedResponse } from '../types/api';
 
 const api = axios.create({  
-  baseURL: 'http://51.20.89.154/api/v1'
+  baseURL: 'https://xelwazeer.work.gd/api/v1'
 });
 
 export const getExchanges = async (filters: {
