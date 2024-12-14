@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getExchanges, getCandles, getMetadata } from '../services/api';
+import { getExchanges, getCandles, getMetadata, getFavorites } from '../services/api';
 import { Exchange } from '../types/exchange';
 import { FilterPanel } from '../components/filters/FilterPanel';
 import { useExchangeFilters } from '../hooks/useExchangeFilters';
@@ -11,6 +11,16 @@ import { Footer } from '../components/layout/Footer';
 export function ExchangePage() {
   const [selectedExchange, setSelectedExchange] = useState<Exchange | null>(null);
   const { filters, handleFilterChange, handleReset, getQueryParams } = useExchangeFilters();
+
+  const { 
+    data: favorites = [],
+    isLoading: isFavoritesLoading,
+  } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: getFavorites,
+  });
+
+  const favoriteSymbols = Array.isArray(favorites) ? favorites.map(fav => fav.symbol) : [];
 
   const { 
     data: exchanges = [], 
@@ -35,7 +45,7 @@ export function ExchangePage() {
   });
 
   const { 
-    data: metadata = [], 
+    data: metadata = {}, 
     isLoading: isMetadataLoading,
     isError: isMetadataError,
   } = useQuery({
@@ -43,7 +53,7 @@ export function ExchangePage() {
     queryFn: () =>
       selectedExchange
         ? getMetadata(selectedExchange.symbol)
-        : Promise.resolve([]),
+        : Promise.resolve({}),
     enabled: !!selectedExchange,
   });
 
@@ -80,6 +90,7 @@ export function ExchangePage() {
             isMetadataLoading={isMetadataLoading}
             isCandlesError={isCandlesError}
             isMetadataError={isMetadataError}
+            favorites={favoriteSymbols}
           />
         </div>
       </div>

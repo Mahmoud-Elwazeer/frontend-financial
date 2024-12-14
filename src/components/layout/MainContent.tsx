@@ -17,6 +17,7 @@ interface MainContentProps {
   isMetadataLoading: boolean;
   isCandlesError: boolean;
   isMetadataError: boolean;
+  favorites: string[];
 }
 
 export const MainContent: React.FC<MainContentProps> = ({
@@ -30,6 +31,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   isMetadataLoading,
   isCandlesError,
   isMetadataError,
+  favorites,
 }) => {
   const [chartType, setChartType] = useState<'candle' | 'area'>('candle');
 
@@ -41,6 +43,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             exchanges={exchanges}
             onExchangeSelect={onExchangeSelect}
             selectedExchange={selectedExchange || undefined}
+            favorites={favorites}
           />
         </div>
         
@@ -73,7 +76,7 @@ export const MainContent: React.FC<MainContentProps> = ({
 
       {selectedExchange && (
         <div className="mt-6">
-          {Object.keys(metadata).length === 0 && !isMetadataLoading ? (
+          {Object.keys(metadata || {}).length === 0 && !isMetadataLoading ? (
             <div className="bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 dark:border-yellow-600 text-yellow-700 dark:text-yellow-200 px-4 py-3 rounded relative" role="alert">
               <strong className="font-bold">Notice:</strong>
               <span className="block sm:inline"> No Metadata available for this exchange.</span>

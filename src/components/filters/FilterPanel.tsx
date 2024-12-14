@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getFilterOptions } from '../../services/api';
+import { getFilterOptions } from '../../services/api/exchanges';
 import { MultiSelect } from './MultiSelect';
 import { FilterState } from '../../types/filters';
 import { RefreshCw } from 'lucide-react';

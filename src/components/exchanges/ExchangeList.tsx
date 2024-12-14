@@ -1,17 +1,20 @@
 import React from 'react';
 import { Exchange } from '../../types/exchange';
 import { Building2, Globe, Coins, Briefcase } from 'lucide-react';
+import { FavoriteButton } from './FavoriteButton';
 
 interface ExchangeListProps {
   exchanges: Exchange[];
   onExchangeSelect: (exchange: Exchange) => void;
   selectedExchange?: Exchange;
+  favorites?: string[];
 }
 
 export const ExchangeList: React.FC<ExchangeListProps> = ({
   exchanges,
   onExchangeSelect,
   selectedExchange,
+  favorites = [],
 }) => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
@@ -55,6 +58,10 @@ export const ExchangeList: React.FC<ExchangeListProps> = ({
                   </div>
                 </div>
               </div>
+              <FavoriteButton
+                symbol={exchange.symbol}
+                isFavorite={favorites.includes(exchange.symbol)}
+              />
             </div>
           </div>
         ))}
