@@ -4,9 +4,7 @@ import { getExchanges, getCandles, getMetadata, getFavorites } from '../services
 import { Exchange } from '../types/exchange';
 import { FilterPanel } from '../components/filters/FilterPanel';
 import { useExchangeFilters } from '../hooks/useExchangeFilters';
-import { Header } from '../components/layout/Header';
 import { MainContent } from '../components/layout/MainContent';
-import { Footer } from '../components/layout/Footer';
 
 export function ExchangePage() {
   const [selectedExchange, setSelectedExchange] = useState<Exchange | null>(null);
@@ -67,34 +65,28 @@ export function ExchangePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 transition-colors">
-      <Header />
-      <div className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <FilterPanel
-            filters={filters}
-            onFilterChange={handleFilterChange}
-            onApply={handleApplyFilters}
-            onReset={handleResetFilters}
-            hasResults={!isExchangesLoading && exchanges.length > 0}
-          />
-          
-          <MainContent
-            selectedExchange={selectedExchange}
-            exchanges={exchanges}
-            candles={candles}
-            metadata={metadata}
-            onExchangeSelect={setSelectedExchange}
-            isExchangesLoading={isExchangesLoading}
-            isCandlesLoading={isCandlesLoading}
-            isMetadataLoading={isMetadataLoading}
-            isCandlesError={isCandlesError}
-            isMetadataError={isMetadataError}
-            favorites={favoriteSymbols}
-          />
-        </div>
-      </div>
-      <Footer />
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <FilterPanel
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onApply={handleApplyFilters}
+        onReset={handleResetFilters}
+        hasResults={!isExchangesLoading && exchanges.length > 0}
+      />
+      
+      <MainContent
+        selectedExchange={selectedExchange}
+        exchanges={exchanges}
+        candles={candles}
+        metadata={metadata}
+        onExchangeSelect={setSelectedExchange}
+        isExchangesLoading={isExchangesLoading}
+        isCandlesLoading={isCandlesLoading}
+        isMetadataLoading={isMetadataLoading}
+        isCandlesError={isCandlesError}
+        isMetadataError={isMetadataError}
+        favorites={favoriteSymbols}
+      />
     </div>
   );
 }
