@@ -5,6 +5,8 @@ import { CandleChart } from '../candles/CandleChart';
 import { AreaChart } from '../charts/AreaChart';
 import { ChartToggle } from '../charts/ChartToggle';
 import { MetadataDisplay } from '../metadata/MetadataDisplay';
+import { PopupChart } from '../charts/PopupChart';
+import { Maximize2 } from 'lucide-react';
 
 interface MainContentProps {
   selectedExchange: Exchange | null;
@@ -34,6 +36,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   favorites,
 }) => {
   const [chartType, setChartType] = useState<'candle' | 'area'>('candle');
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -54,7 +57,16 @@ export const MainContent: React.FC<MainContentProps> = ({
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                   {selectedExchange.name} ({selectedExchange.symbol})
                 </h2>
-                <ChartToggle chartType={chartType} onToggle={setChartType} />
+                <div className="flex items-center gap-2">
+                  <ChartToggle chartType={chartType} onToggle={setChartType} />
+                  <button
+                    onClick={() => setIsChartModalOpen(true)}
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    aria-label="View in popup"
+                  >
+                    <Maximize2 className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                  </button>
+                </div>
               </div>
               {chartType === 'candle' ? (
                 <CandleChart 
@@ -91,6 +103,17 @@ export const MainContent: React.FC<MainContentProps> = ({
             </div>
           )}
         </div>
+      )}
+
+      {selectedExchange && (
+        <PopupChart
+          isOpen={isChartModalOpen}
+          onClose={() => setIsChartModalOpen(false)}
+          data={candles}
+          title={`${selectedExchange.name} (${selectedExchange.symbol})`}
+          isLoading={isCandlesLoading}
+          isError={isCandlesError}
+        />
       )}
     </main>
   );
