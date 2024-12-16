@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getFavorites, getCandles, getMetadata } from '../services/api';
+import { getCandles, getMetadata } from '../services/api';
 import { Exchange } from '../types/exchange';
 import { MainContent } from '../components/layout/MainContent';
 import { LoadingSpinner } from '../components/loadingPage/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage/ErrorMessage';
+import { useFavorites } from '../hooks/useFavorites';
 
 export function FavoritesPage() {
   const [selectedExchange, setSelectedExchange] = useState<Exchange | null>(null);
+  const { favorites, favoriteSymbols, isLoading: isFavoritesLoading } = useFavorites();
 
-  const { 
-    data: favorites = [],
-    isLoading: isFavoritesLoading,
-    isError: isFavoritesError,
-  } = useQuery({
-    queryKey: ['favorites'],
-    queryFn: getFavorites,
-  });
-
-  const favoriteSymbols = favorites.map(fav => fav.symbol);
   const exchanges = favorites.map(item => item.exchange);
 
   const { 
@@ -55,7 +47,7 @@ export function FavoritesPage() {
     );
   }
 
-  if (isFavoritesError) {
+  if (favorites.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
