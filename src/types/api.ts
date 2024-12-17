@@ -4,6 +4,11 @@ export interface Pagination {
   totalItems: number;
 }
 
+export interface ApiError {
+  status: string;
+  message: string;
+}
+
 export interface ApiResponse<T> {
   message: string;
   [key: string]: T | string;

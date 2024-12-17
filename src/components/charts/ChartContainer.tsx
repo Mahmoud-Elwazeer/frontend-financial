@@ -1,32 +1,67 @@
 import React from 'react';
 import { CandleChart } from '../candles/CandleChart';
 import { AreaChart } from './AreaChart';
-import { Candle } from '../../types/candle';
+import { DateRangeSelector } from '../dateRange/DateRangeSelector';
+import { useCandles } from '../../hooks/useCandles';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 interface ChartContainerProps {
     chartType: 'candle' | 'area';
-    data: Candle[];
-    isLoading: boolean;
-    isError: boolean;
+    symbol: string;
 }
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({
     chartType,
-    data,
-    isLoading,
-    isError,
+    symbol,
 }) => {
-    return chartType === 'candle' ? (
-        <CandleChart
-            data={data}
-            isLoading={isLoading}
-            isError={isError}
-        />
-    ) : (
-        <AreaChart
-            data={data}
-            isLoading={isLoading}
-            isError={isError}
-        />
+    const {
+        candles,
+        isLoading,
+        isError,
+        error,
+        dateRange,
+        setDateRange,
+        resetDateRange,
+    } = useCandles(symbol);
+
+    const handleFromDateChange = (date: Date | undefined) => {
+        setDateRange(prev => ({ ...prev, from: date }));
+    };
+
+    const handleToDateChange = (date: Date | undefined) => {
+        setDateRange(prev => ({ ...prev, to: date }));
+    };
+
+    const errorMessage = error instanceof Error ? error.message : 'An error occurred while fetching data';
+
+    return (
+        <div>
+            <DateRangeSelector
+                fromDate={dateRange.from}
+                toDate={dateRange.to}
+                onFromChange={handleFromDateChange}
+                onToChange={handleToDateChange}
+                onReset={resetDateRange}
+            />
+
+            {isError ? (
+                <ErrorMessage
+                    message={errorMessage}
+                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                />
+            ) : chartType === 'candle' ? (
+                <CandleChart
+                    data={candles}
+                    isLoading={isLoading}
+                    isError={isError}
+                />
+            ) : (
+                <AreaChart
+                    data={candles}
+                    isLoading={isLoading}
+                    isError={isError}
+                />
+            )}
+        </div>
     );
 };
