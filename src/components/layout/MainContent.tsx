@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Exchange } from '../../types/exchange';
 import { ExchangeList } from '../exchanges/ExchangeList';
-import { ChartContainer } from '../charts/ChartContainer';
-import { ChartToggle } from '../charts/ChartToggle';
 import { MetadataDisplay } from '../metadata/MetadataDisplay';
 import { PopupChart } from '../charts/PopupChart';
-import { Maximize2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getMetadata } from '../../services/api';
-import { NoExchangeSelected } from '../exchanges/NoExchangeSelected';
+import { ChartSection } from '../charts/ChartSection';
 
 interface MainContentProps {
   selectedExchange: Exchange | null;
@@ -54,35 +51,17 @@ export const MainContent: React.FC<MainContentProps> = ({
         </div>
         
         <div className="space-y-6">
-          {selectedExchange ? (
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  {selectedExchange.name} ({selectedExchange.symbol})
-                </h2>
-                <div className="flex items-center gap-2">
-                  <ChartToggle chartType={chartType} onToggle={setChartType} />
-                  <button
-                    onClick={() => setIsChartModalOpen(true)}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    aria-label="View in popup"
-                  >
-                    <Maximize2 className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-                  </button>
-                </div>
-              </div>
-              <ChartContainer
-                chartType={chartType}
-                symbol={selectedExchange.symbol}
-              />
-            </div>
-          ) : (
-            <NoExchangeSelected />
-          )}
+          <ChartSection
+            selectedExchange={selectedExchange}
+            isLoading={isExchangesLoading}
+            chartType={chartType}
+            onChartTypeChange={setChartType}
+            onOpenModal={() => setIsChartModalOpen(true)}
+          />
         </div>
       </div>
 
-      {selectedExchange ? (
+      {selectedExchange && !isExchangesLoading && (
         <div className="mt-6">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
             <MetadataDisplay 
@@ -92,7 +71,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             />
           </div>
         </div>
-      ) : null}
+      )}
 
       {selectedExchange && (
         <PopupChart
