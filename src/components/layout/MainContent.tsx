@@ -47,6 +47,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             onExchangeSelect={onExchangeSelect}
             selectedExchange={selectedExchange || undefined}
             favorites={favorites}
+            isLoading={isExchangesLoading}
           />
         </div>
         
