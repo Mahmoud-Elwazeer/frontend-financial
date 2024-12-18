@@ -12,6 +12,8 @@ interface MainContentProps {
   exchanges: Exchange[];
   onExchangeSelect: (exchange: Exchange) => void;
   isExchangesLoading: boolean;
+  isExchangesError: boolean;
+  exchangesError?: string;
   favorites: string[];
 }
 
@@ -20,6 +22,8 @@ export const MainContent: React.FC<MainContentProps> = ({
   exchanges,
   onExchangeSelect,
   isExchangesLoading,
+  isExchangesError,
+  exchangesError,
   favorites,
 }) => {
   const [chartType, setChartType] = useState<'candle' | 'area'>('candle');
@@ -48,6 +52,8 @@ export const MainContent: React.FC<MainContentProps> = ({
             selectedExchange={selectedExchange || undefined}
             favorites={favorites}
             isLoading={isExchangesLoading}
+            isError={isExchangesError}
+            error={exchangesError}
           />
         </div>
         

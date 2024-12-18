@@ -2,6 +2,7 @@ import React from 'react';
 import { Exchange } from '../../types/exchange';
 import { ExchangeListItem } from './ExchangeListItem';
 import { ExchangeListSkeleton } from './ExchangeListSkeleton';
+import { ExchangeListError } from './ExchangeListError';
 
 interface ExchangeListProps {
   exchanges: Exchange[];
@@ -9,6 +10,8 @@ interface ExchangeListProps {
   selectedExchange?: Exchange;
   favorites?: string[];
   isLoading?: boolean;
+  isError?: boolean;
+  error?: string;
 }
 
 export const ExchangeList: React.FC<ExchangeListProps> = ({
@@ -17,9 +20,27 @@ export const ExchangeList: React.FC<ExchangeListProps> = ({
   selectedExchange,
   favorites = [],
   isLoading = false,
+  isError = false,
+  error,
 }) => {
   if (isLoading) {
     return <ExchangeListSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <ExchangeListError 
+        message={error || "No Exchanges found for the selected Filtration. Please adjust Filtration and try again"}
+      />
+    );
+  }
+
+  if (!exchanges.length) {
+    return (
+      <ExchangeListError 
+        message="No Exchanges found for the selected Filtration. Please adjust Filtration and try again"
+      />
+    );
   }
 
   return (
