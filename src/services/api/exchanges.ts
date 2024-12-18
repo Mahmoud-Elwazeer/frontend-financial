@@ -1,6 +1,6 @@
 import { api } from './config';
 import { Exchange } from '../../types/exchange';
-import { ApiResponse, PaginatedResponse } from '../../types/api';
+import { ApiResponse } from '../../types/api';
 import { FilterOptions } from '../../types/filters';
 
 interface ExchangeFilters {
@@ -11,7 +11,7 @@ interface ExchangeFilters {
 }
 
 export const getExchanges = async (filters: ExchangeFilters) => {
-  const { data } = await api.get<ApiResponse<{ pagination: PaginatedResponse<Exchange> }>>(
+  const { data } = await api.get<ApiResponse<{ totalItems: number; data: Exchange[] }>>(
     '/exchanges',
     { params: filters }
   );

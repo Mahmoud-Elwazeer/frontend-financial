@@ -8,16 +8,13 @@ import { RefreshCw } from 'lucide-react';
 interface FilterPanelProps {
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
-  onApply: () => void;
   onReset: () => void;
-  hasResults: boolean;
 }
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   filters,
   onFilterChange,
   onReset,
-  hasResults,
 }) => {
   const { data: filterOptions, isLoading } = useQuery({
     queryKey: ['filterOptions'],
