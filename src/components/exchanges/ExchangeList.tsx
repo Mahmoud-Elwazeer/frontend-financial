@@ -27,18 +27,10 @@ export const ExchangeList: React.FC<ExchangeListProps> = ({
     return <ExchangeListSkeleton />;
   }
 
-  if (isError) {
+  if (!exchanges.length || isError) {
     return (
       <ExchangeListError 
         message={error || "No Exchanges found for the selected Filtration. Please adjust Filtration and try again"}
-      />
-    );
-  }
-
-  if (!exchanges.length) {
-    return (
-      <ExchangeListError 
-        message="No Exchanges found for the selected Filtration. Please adjust Filtration and try again"
       />
     );
   }

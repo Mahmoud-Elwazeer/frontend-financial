@@ -1,7 +1,8 @@
 import { api } from './config';
 import { Exchange } from '../../types/exchange';
-import { ApiResponse } from '../../types/api';
+import { ApiResponse, ApiError } from '../../types/api';
 import { FilterOptions } from '../../types/filters';
+import axios from 'axios';
 
 interface ExchangeFilters {
   type?: string;
@@ -11,19 +12,43 @@ interface ExchangeFilters {
 }
 
 export const getExchanges = async (filters: ExchangeFilters) => {
-  const { data } = await api.get<ApiResponse<{ totalItems: number; data: Exchange[] }>>(
-    '/exchanges',
-    { params: filters }
-  );
-  return data.exchanges.data;
+  try {
+    const { data } = await api.get<ApiResponse<{ totalItems: number; data: Exchange[] }>>(
+      '/exchanges',
+      { params: filters }
+    );
+    return data.exchanges.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const apiError = error.response.data as ApiError;
+      throw new Error(apiError.message);
+    }
+  throw error;
+  }
 };
 
 export const getExchangeDetails = async (symbol: string) => {
-  const { data } = await api.get<ApiResponse<Exchange>>(`/exchanges/${symbol}`);
-  return data.exchange;
+  try {
+    const { data } = await api.get<ApiResponse<Exchange>>(`/exchanges/${symbol}`);
+    return data.exchange;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const apiError = error.response.data as ApiError;
+      throw new Error(apiError.message);
+    }
+  throw error;
+  }
 };
 
 export const getFilterOptions = async (): Promise<FilterOptions> => {
-  const { data } = await api.get<ApiResponse<{ filters: FilterOptions }>>('/exchanges/filters');
-  return data.filters;
+  try {
+    const { data } = await api.get<ApiResponse<{ filters: FilterOptions }>>('/exchanges/filters');
+    return data.filters;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const apiError = error.response.data as ApiError;
+      throw new Error(apiError.message);
+    }
+  throw error;
+  }
 };

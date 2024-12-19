@@ -33,6 +33,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     data: metadata = {}, 
     isLoading: isMetadataLoading,
     isError: isMetadataError,
+    error: metadataError,
   } = useQuery({
     queryKey: ['metadata', selectedExchange?.symbol],
     queryFn: () =>
@@ -75,6 +76,7 @@ export const MainContent: React.FC<MainContentProps> = ({
               data={metadata}
               isLoading={isMetadataLoading}
               isError={isMetadataError}
+              error={metadataError instanceof Error ? metadataError.message : undefined}
             />
           </div>
         </div>

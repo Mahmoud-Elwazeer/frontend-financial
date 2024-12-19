@@ -6,21 +6,22 @@ import {
 import { formatCurrency, formatLargeNumber } from '../../utils/formatters';
 import { CompanyMetadata } from '../../types/metadata';
 import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { MetadataError } from './MetadataError';
 
 interface MetadataDisplayProps {
   data: CompanyMetadata;
   isLoading: boolean;
   isError: boolean;
+  error?: string;
 }
 
-export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoading, isError }) => {
+export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoading, isError, error  }) => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   if (isError || !data) {
-    return null;
+    return <MetadataError message={error || "Not Found Metadata"} />;
   }
 
   const {
