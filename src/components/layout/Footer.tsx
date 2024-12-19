@@ -23,22 +23,42 @@ export const Footer: React.FC = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+                <a
+                  href="https://github.com/Mahmoud-Elwazeer/financial-instruments/tree/main/docs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                >
                   Documentation
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+                <a
+                  href="https://github.com/Mahmoud-Elwazeer/financial-instruments/tree/main/docs/api"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                >
                   API Reference
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                >
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
+                >
                   Privacy Policy
                 </a>
               </li>
@@ -52,21 +72,16 @@ export const Footer: React.FC = () => {
             </h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://github.com/Mahmoud-Elwazeer"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                 aria-label="GitHub"
               >
                 <Github className="h-6 w-6" />
               </a>
               <a
-                href="#"
-                className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a
-                href="mailto:contact@example.com"
+                href="mailto:mahmoud.m.elwazeer@gmail.com"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400"
                 aria-label="Email"
               >

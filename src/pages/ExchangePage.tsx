@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getExchanges, getCandles, getMetadata, getFavorites } from '../services/api';
 import { Exchange } from '../types/exchange';
@@ -9,6 +9,11 @@ import { MainContent } from '../components/layout/MainContent';
 export function ExchangePage() {
   const [selectedExchange, setSelectedExchange] = useState<Exchange | null>(null);
   const { filters, handleFilterChange, handleReset, getQueryParams } = useExchangeFilters();
+
+  // Reset selected exchange whenever filters change
+  useEffect(() => {
+    setSelectedExchange(null);
+  }, [filters]);
 
   const { 
     data: favorites = [],
@@ -22,7 +27,6 @@ export function ExchangePage() {
 
   const { 
     data: exchanges = [], 
-    refetch: refetchExchanges,
     isLoading: isExchangesLoading,
   } = useQuery({
     queryKey: ['exchanges', getQueryParams()],
@@ -55,13 +59,8 @@ export function ExchangePage() {
     enabled: !!selectedExchange,
   });
 
-  const handleApplyFilters = () => {
-    refetchExchanges();
-  };
-
   const handleResetFilters = () => {
     handleReset();
-    refetchExchanges();
   };
 
   return (
@@ -69,7 +68,6 @@ export function ExchangePage() {
       <FilterPanel
         filters={filters}
         onFilterChange={handleFilterChange}
-        onApply={handleApplyFilters}
         onReset={handleResetFilters}
         hasResults={!isExchangesLoading && exchanges.length > 0}
       />
