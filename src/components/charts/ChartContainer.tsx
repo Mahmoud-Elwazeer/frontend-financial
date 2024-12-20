@@ -35,7 +35,7 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
     const errorMessage = error instanceof Error ? error.message : 'An error occurred while fetching data';
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <DateRangeSelector
                 fromDate={dateRange.from}
                 toDate={dateRange.to}
@@ -44,24 +44,26 @@ export const ChartContainer: React.FC<ChartContainerProps> = ({
                 onReset={resetDateRange}
             />
 
-            {isError ? (
-                <ErrorMessage
-                    message={errorMessage}
-                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
-                />
-            ) : chartType === 'candle' ? (
-                <CandleChart
-                    data={candles}
-                    isLoading={isLoading}
-                    isError={isError}
-                />
-            ) : (
-                <AreaChart
-                    data={candles}
-                    isLoading={isLoading}
-                    isError={isError}
-                />
-            )}
+            <div className="flex-1 min-h-0">
+                {isError ? (
+                    <ErrorMessage
+                        message={errorMessage}
+                        className="h-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+                    />
+                ) : chartType === 'candle' ? (
+                    <CandleChart
+                        data={candles}
+                        isLoading={isLoading}
+                        isError={isError}
+                    />
+                ) : (
+                    <AreaChart
+                        data={candles}
+                        isLoading={isLoading}
+                        isError={isError}
+                    />
+                )}
+            </div>
         </div>
     );
 };
