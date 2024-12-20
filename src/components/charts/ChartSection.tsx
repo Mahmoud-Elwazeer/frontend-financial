@@ -23,20 +23,24 @@ export const ChartSection: React.FC<ChartSectionProps> = ({
 }) => {
     if (isLoading) {
         return (
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-[600px] flex items-center justify-center">
                 <LoadingSpinner />
             </div>
         );
     }
 
     if (!selectedExchange) {
-        return <NoExchangeSelected />;
+        return (
+            <div className="h-[600px]">
+                <NoExchangeSelected />
+            </div>
+        );
     }
 
     return (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm h-[600px]">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white truncate">
                     {selectedExchange.name} ({selectedExchange.symbol})
                 </h2>
                 <div className="flex items-center gap-2">

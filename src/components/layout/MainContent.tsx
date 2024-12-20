@@ -44,28 +44,32 @@ export const MainContent: React.FC<MainContentProps> = ({
   });
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div>
-          <ExchangeList
-            exchanges={exchanges}
-            onExchangeSelect={onExchangeSelect}
-            selectedExchange={selectedExchange || undefined}
-            favorites={favorites}
-            isLoading={isExchangesLoading}
-            isError={isExchangesError}
-            error={exchangesError}
-          />
+    <main className="max-w-7xl mx-auto space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
+        <div className="h-full">
+          <div className="sticky top-24 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+            <ExchangeList
+              exchanges={exchanges}
+              onExchangeSelect={onExchangeSelect}
+              selectedExchange={selectedExchange || undefined}
+              favorites={favorites}
+              isLoading={isExchangesLoading}
+              isError={isExchangesError}
+              error={exchangesError}
+            />
+          </div>
         </div>
         
-        <div className="space-y-6">
-          <ChartSection
-            selectedExchange={selectedExchange}
-            isLoading={isExchangesLoading}
-            chartType={chartType}
-            onChartTypeChange={setChartType}
-            onOpenModal={() => setIsChartModalOpen(true)}
-          />
+        <div className="h-full">
+          <div className="sticky top-24">
+            <ChartSection
+              selectedExchange={selectedExchange}
+              isLoading={isExchangesLoading}
+              chartType={chartType}
+              onChartTypeChange={setChartType}
+              onOpenModal={() => setIsChartModalOpen(true)}
+            />
+          </div>
         </div>
       </div>
 
