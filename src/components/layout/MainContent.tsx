@@ -44,53 +44,50 @@ export const MainContent: React.FC<MainContentProps> = ({
   });
 
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* Main grid with fixed height to prevent layout shifts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[600px] mb-6">
-        {/* Exchange list with fixed dimensions */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-          <ExchangeList
-            exchanges={exchanges}
-            onExchangeSelect={onExchangeSelect}
-            selectedExchange={selectedExchange || undefined}
-            favorites={favorites}
-            isLoading={isExchangesLoading}
-            isError={isExchangesError}
-            error={exchangesError}
-          />
-        </div>
-        
-        {/* Chart section with fixed dimensions */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-          <ChartSection
-            selectedExchange={selectedExchange}
-            isLoading={isExchangesLoading}
-            chartType={chartType}
-            onChartTypeChange={setChartType}
-            onOpenModal={() => setIsChartModalOpen(true)}
-          />
-        </div>
-      </div>
-
-      {/* Metadata section with smooth height transition */}
-      <div 
-        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          selectedExchange ? 'h-[200px] opacity-100' : 'h-0 opacity-0'
-        }`}
-      >
-        {selectedExchange && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-            <MetadataDisplay 
-              data={metadata}
-              isLoading={isMetadataLoading}
-              isError={isMetadataError}
-              error={metadataError instanceof Error ? metadataError.message : undefined}
+    <main className="max-w-7xl mx-auto space-y-6">
+      {/* Fixed height container for the grid to prevent layout shift */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
+        {/* Exchange list with fixed height */}
+        <div className="h-[600px]">
+          <div className="sticky top-24 h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+            <ExchangeList
+              exchanges={exchanges}
+              onExchangeSelect={onExchangeSelect}
+              selectedExchange={selectedExchange || undefined}
+              favorites={favorites}
+              isLoading={isExchangesLoading}
+              isError={isExchangesError}
+              error={exchangesError}
             />
           </div>
-        )}
+        </div>
+        
+        {/* Chart section with fixed height */}
+        <div className="h-[600px]">
+          <div className="sticky top-24 h-full">
+            <ChartSection
+              selectedExchange={selectedExchange}
+              isLoading={isExchangesLoading}
+              chartType={chartType}
+              onChartTypeChange={setChartType}
+              onOpenModal={() => setIsChartModalOpen(true)}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Modal chart */}
+      {/* Metadata section with min-height to prevent layout shift */}
+      {selectedExchange && !isExchangesLoading && (
+        <div className="min-h-[200px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+          <MetadataDisplay 
+            data={metadata}
+            isLoading={isMetadataLoading}
+            isError={isMetadataError}
+            error={metadataError instanceof Error ? metadataError.message : undefined}
+          />
+        </div>
+      )}
+
       {selectedExchange && (
         <PopupChart
           isOpen={isChartModalOpen}
@@ -101,6 +98,6 @@ export const MainContent: React.FC<MainContentProps> = ({
           onChartTypeChange={setChartType}
         />
       )}
-    </div>
+    </main>
   );
 };
