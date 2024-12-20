@@ -36,8 +36,8 @@ export const ExchangeList: React.FC<ExchangeListProps> = ({
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
-      <div className="overflow-y-auto max-h-[600px] scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+    <div className="h-full flex flex-col">
+      <div className="flex-1 overflow-y-auto">
         {exchanges.map((exchange) => (
           <ExchangeListItem
             key={exchange._id}
