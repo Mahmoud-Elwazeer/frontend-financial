@@ -45,9 +45,11 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   return (
     <main className="max-w-7xl mx-auto space-y-6">
+      {/* Fixed height container for the grid to prevent layout shift */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
-        <div className="h-full">
-          <div className="sticky top-24 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+        {/* Exchange list with fixed height */}
+        <div className="h-[600px]">
+          <div className="sticky top-24 h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
             <ExchangeList
               exchanges={exchanges}
               onExchangeSelect={onExchangeSelect}
@@ -60,8 +62,9 @@ export const MainContent: React.FC<MainContentProps> = ({
           </div>
         </div>
         
-        <div className="h-full">
-          <div className="sticky top-24">
+        {/* Chart section with fixed height */}
+        <div className="h-[600px]">
+          <div className="sticky top-24 h-full">
             <ChartSection
               selectedExchange={selectedExchange}
               isLoading={isExchangesLoading}
@@ -73,16 +76,15 @@ export const MainContent: React.FC<MainContentProps> = ({
         </div>
       </div>
 
+      {/* Metadata section with min-height to prevent layout shift */}
       {selectedExchange && !isExchangesLoading && (
-        <div className="mt-6">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-            <MetadataDisplay 
-              data={metadata}
-              isLoading={isMetadataLoading}
-              isError={isMetadataError}
-              error={metadataError instanceof Error ? metadataError.message : undefined}
-            />
-          </div>
+        <div className="min-h-[200px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+          <MetadataDisplay 
+            data={metadata}
+            isLoading={isMetadataLoading}
+            isError={isMetadataError}
+            error={metadataError instanceof Error ? metadataError.message : undefined}
+          />
         </div>
       )}
 
