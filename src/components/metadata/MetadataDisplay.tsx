@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  Building2, Globe, Briefcase, Users, Calendar, Phone, Link2,
+  Building2, Globe, Briefcase, Users, Coins, Phone, Link2,
   DollarSign, TrendingUp, BarChart3, PieChart, Activity
 } from 'lucide-react';
 import { formatCurrency, formatLargeNumber } from '../../utils/formatters';
@@ -29,6 +29,8 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     symbol,
     isin,
     exchange,
+    countryName,
+    type,
     currency,
     description,
     sector,
@@ -42,6 +44,8 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     technicals,
     exchangeTradedFundDetails,
   } = data;
+
+  console.log(data)
 
   return (
     <div className="space-y-6">
@@ -59,6 +63,9 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{name}</h1>
               <span className="text-sm text-gray-500 dark:text-gray-400">({symbol})</span>
+              {isin && (
+                <span className="text-sm text-gray-500 dark:text-gray-400">({isin})</span>
+              )}
             </div>
             <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-300">
               <div className="flex items-center gap-1">
@@ -66,8 +73,12 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
                 {sector}
               </div>
               <div className="flex items-center gap-1">
+                <Coins className="h-4 w-4" />
+                {currency}
+            </div>
+              <div className="flex items-center gap-1">
                 <Briefcase className="h-4 w-4" />
-                {industry}
+                {type}
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
@@ -75,7 +86,7 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
               </div>
               <div className="flex items-center gap-1">
                 <Globe className="h-4 w-4" />
-                {addressDetails?.country}
+                {countryName}
               </div>
             </div>
             <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
@@ -87,7 +98,8 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
 
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Market Stats */}
+
+          {/* Market Stats */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
             <BarChart3 className="h-5 w-5 text-primary-500 dark:text-primary-400" />
@@ -173,6 +185,43 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
             </div>
           </div>
         </div>
+
+        {/* Fund Information */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <BarChart3 className="h-5 w-5 text-primary-500 dark:text-primary-400" />
+            Fund Information
+          </h2>
+          <div className="space-y-4">
+            <MetricItem label="Total Assets" value={exchangeTradedFundDetails?.totalAssets? formatLargeNumber(exchangeTradedFundDetails?.totalAssets): 'N/A'}
+            />
+            <MetricItem label="Ongoing Charge" value={exchangeTradedFundDetails?.ongoingCharge?`${parseFloat(exchangeTradedFundDetails.ongoingCharge).toFixed(2)}`: 'N/A' }
+            />
+            <MetricItem label="Inception Date" value={exchangeTradedFundDetails?.inceptionDate}
+            />
+            <MetricItem label="Domicile" value={exchangeTradedFundDetails?.domicile}
+            />
+          </div>
+        </div>
+
+        {/* Risk Metrics*/}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+            <BarChart3 className="h-5 w-5 text-primary-500 dark:text-primary-400" />
+            Risk Metrics
+          </h2>
+          <div className="space-y-4">
+            <MetricItem label="1Y Volatility" value={exchangeTradedFundDetails?.performance['1YVolatility'] ? `${exchangeTradedFundDetails?.performance['1YVolatility']} %` : 'N/A' }
+            />
+            <MetricItem label="3Y Volatility" value={exchangeTradedFundDetails?.performance['1YVolatility'] ? `${exchangeTradedFundDetails?.performance['3YVolatility']} %` : 'N/A' }
+            />
+            <MetricItem label="3Y Exp Return" value={exchangeTradedFundDetails?.performance['1YVolatility'] ? `${exchangeTradedFundDetails?.performance['3YExpReturn']} %` : 'N/A' }
+            />
+            <MetricItem label="3Y Sharp Ratio" value={exchangeTradedFundDetails?.performance['1YVolatility'] ? `${exchangeTradedFundDetails?.performance['3YSharpRatio']} %` : 'N/A' }
+            />
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -185,6 +234,7 @@ interface MetricItemProps {
 
 const MetricItem: React.FC<MetricItemProps> = ({ label, value }) => {
   if (!value) return null;
+  if (value === 'N/A') return null;
   
   return (
     <div>

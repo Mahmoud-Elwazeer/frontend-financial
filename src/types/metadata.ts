@@ -4,6 +4,8 @@ export interface CompanyMetadata {
   isin: string;
   exchange: string;
   currency: string;
+  countryName: string;
+  type: string;
   name: string;
   description: string;
   sector: string;
@@ -42,7 +44,7 @@ export interface CompanyMetadata {
   };
   exchangeTradedFundDetails: {
     totalAssets: number;
-    ongoingCharge: number;
+    ongoingCharge: string;
     inceptionDate: string;
     domicile: string;
     performance: {
