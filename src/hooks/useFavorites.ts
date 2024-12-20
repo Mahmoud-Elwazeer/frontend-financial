@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getFavorites, addFavorite, removeFavorite } from '../services/api/favorites';
+import { Favorite } from '../types/favorite';
 
 export const useFavorites = () => {
   const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ export const useFavorites = () => {
       const previousFavorites = queryClient.getQueryData(['favorites']);
 
       // Optimistically update favorites
-      queryClient.setQueryData(['favorites'], (old: any[] = []) => {
+      queryClient.setQueryData(['favorites'], (old: Favorite[] = []) => {
         if (isFavorite) {
           return old.filter(fav => fav.symbol !== symbol);
         }
@@ -36,7 +37,7 @@ export const useFavorites = () => {
 
       return { previousFavorites };
     },
-    onError: (err, variables, context) => {
+    onError: (_err,_variables, context) => {
       // Rollback on error
       if (context?.previousFavorites) {
         queryClient.setQueryData(['favorites'], context.previousFavorites);

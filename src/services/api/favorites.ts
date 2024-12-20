@@ -1,7 +1,9 @@
 import { api } from './config';
 import { Favorite } from '../../types/favorite';
-import { ApiResponse } from '../../types/api';
+import { ApiResponse, ApiError } from '../../types/api';
 import { Exchange } from '../../types/exchange';
+import axios from 'axios';
+
 
 export interface FavoriteWithExchange extends Favorite {
   exchange: Exchange;
@@ -22,8 +24,11 @@ export const addFavorite = async (symbol: string): Promise<FavoriteWithExchange 
     const { data } = await api.post<ApiResponse<{ favorite: FavoriteWithExchange }>>('/favorites', { symbol });
     return data.favorite;
   } catch (error) {
-    console.error('Error adding favorite:', error);
-    return null;
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const apiError = error.response.data as ApiError;
+      throw new Error(apiError.message);
+    }
+    throw error;
   }
 };
 
@@ -32,7 +37,10 @@ export const removeFavorite = async (symbol: string): Promise<boolean> => {
     await api.delete(`/favorites/${symbol}`);
     return true;
   } catch (error) {
-    console.error('Error removing favorite:', error);
-    return false;
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const apiError = error.response.data as ApiError;
+      throw new Error(apiError.message);
+    }
+    throw error;
   }
 };

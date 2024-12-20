@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getExchanges, getCandles, getMetadata, getFavorites } from '../services/api';
 import { Exchange } from '../types/exchange';
@@ -16,9 +16,8 @@ export function ExchangePage() {
   }, [filters]);
 
   const { 
-    data: favorites = [],
-    isLoading: isFavoritesLoading,
-  } = useQuery({
+    data: favorites = []
+    } = useQuery({
     queryKey: ['favorites'],
     queryFn: getFavorites,
   });
@@ -69,7 +68,7 @@ export function ExchangePage() {
         filters={filters}
         onFilterChange={handleFilterChange}
         onReset={handleResetFilters}
-        hasResults={!isExchangesLoading && exchanges.length > 0}
+        // hasResults={!isExchangesLoading && exchanges.length > 0}
       />
       
       <MainContent

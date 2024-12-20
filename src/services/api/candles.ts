@@ -21,10 +21,12 @@ export const getCandles = async (symbol: string, dateRange?: DateRange) => {
       params.to = format(dateRange.to, 'yyyy-MM-dd');
     }
 
-    const { data } = await api.get<ApiResponse<{ totalItems: number; data: Candle[] }>>(
+    const { data } = await api.get<ApiResponse<{totalItems: number; data: Candle[] }>>(
       `/candles/${symbol}`,
       { params }
     );
+    
+    
     
     return data.candles.data;
   } catch (error) {

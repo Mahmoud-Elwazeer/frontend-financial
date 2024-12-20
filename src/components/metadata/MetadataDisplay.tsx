@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
-  Building2, Globe, Briefcase, Users, Coins, Phone, Link2,
-  DollarSign, TrendingUp, BarChart3, PieChart, Activity
+  Building2, Globe, Briefcase, Users, Coins, Phone, Link2, BarChart3, Activity
 } from 'lucide-react';
 import { formatCurrency, formatLargeNumber } from '../../utils/formatters';
 import { CompanyMetadata } from '../../types/metadata';
@@ -9,7 +8,7 @@ import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
 import { MetadataError } from './MetadataError';
 
 interface MetadataDisplayProps {
-  data: CompanyMetadata;
+  data:  Partial<CompanyMetadata>;
   isLoading: boolean;
   isError: boolean;
   error?: string;
@@ -28,13 +27,11 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     name,
     symbol,
     isin,
-    exchange,
     countryName,
     type,
     currency,
     description,
     sector,
-    industry,
     fullTimeEmployees,
     webUrl,
     phone,
@@ -44,8 +41,6 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     technicals,
     exchangeTradedFundDetails,
   } = data;
-
-  console.log(data)
 
   return (
     <div className="space-y-6">
@@ -82,7 +77,7 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
               </div>
               <div className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
-                {formatLargeNumber(fullTimeEmployees)} employees
+                {formatLargeNumber(fullTimeEmployees ?? 0)} employees
               </div>
               <div className="flex items-center gap-1">
                 <Globe className="h-4 w-4" />
@@ -108,7 +103,7 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
           <div className="space-y-4">
             <MetricItem
               label="Market Cap"
-              value={formatCurrency(marketCapitalization?.value)}
+              value={formatCurrency(marketCapitalization?.value ?? 0)}
             />
             <MetricItem
               label="P/E Ratio"

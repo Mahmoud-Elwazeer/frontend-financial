@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getCandles, getMetadata } from '../services/api';
 import { Exchange } from '../types/exchange';
 import { MainContent } from '../components/layout/MainContent';
 import { LoadingSpinner } from '../components/loadingPage/LoadingSpinner';
-import { ErrorMessage } from '../components/ErrorMessage/ErrorMessage';
 import { useFavorites } from '../hooks/useFavorites';
 
 export function FavoritesPage() {
