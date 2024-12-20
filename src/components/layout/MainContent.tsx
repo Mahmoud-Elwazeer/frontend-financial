@@ -44,11 +44,10 @@ export const MainContent: React.FC<MainContentProps> = ({
   });
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-6">
+    <main className="max-w-7xl mx-auto space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
-        {/* Exchange List Section */}
         <div className="h-full">
-          <div className="sticky top-24 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700">
+          <div className="sticky top-24 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
             <ExchangeList
               exchanges={exchanges}
               onExchangeSelect={onExchangeSelect}
@@ -60,8 +59,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             />
           </div>
         </div>
-
-        {/* Chart Section */}
+        
         <div className="h-full">
           <div className="sticky top-24">
             <ChartSection
@@ -75,10 +73,9 @@ export const MainContent: React.FC<MainContentProps> = ({
         </div>
       </div>
 
-      {/* Metadata Section */}
       {selectedExchange && !isExchangesLoading && (
         <div className="mt-6">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
             <MetadataDisplay 
               data={metadata}
               isLoading={isMetadataLoading}
@@ -89,7 +86,6 @@ export const MainContent: React.FC<MainContentProps> = ({
         </div>
       )}
 
-      {/* Popup Chart Modal */}
       {selectedExchange && (
         <PopupChart
           isOpen={isChartModalOpen}
