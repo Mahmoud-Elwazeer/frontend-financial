@@ -27,6 +27,9 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
   const {
     name,
     symbol,
+    isin,
+    exchange,
+    currency,
     description,
     sector,
     industry,
@@ -37,6 +40,7 @@ export const MetadataDisplay: React.FC<MetadataDisplayProps> = ({ data, isLoadin
     marketCapitalization,
     highlights,
     technicals,
+    exchangeTradedFundDetails,
   } = data;
 
   return (
