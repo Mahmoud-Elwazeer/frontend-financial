@@ -44,12 +44,18 @@ export const MainContent: React.FC<MainContentProps> = ({
   });
 
   return (
-    <main className="max-w-7xl mx-auto space-y-6">
-      {/* Fixed height container for the grid to prevent layout shift */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
-        {/* Exchange list with fixed height */}
-        <div className="h-[600px]">
-          <div className="sticky top-24 h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+    <main className="relative max-w-7xl mx-auto space-y-6">
+      {/* Container with explicit dimensions to prevent CLS */}
+      <div 
+        className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        style={{ 
+          minHeight: '600px',
+          containIntrinsicSize: '0 600px' // Add contain-intrinsic-size for modern browsers
+        }}
+      >
+        {/* Exchange list container with skeleton state */}
+        <div className="relative h-[600px] transition-all duration-300">
+          <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
             <ExchangeList
               exchanges={exchanges}
               onExchangeSelect={onExchangeSelect}
@@ -62,32 +68,48 @@ export const MainContent: React.FC<MainContentProps> = ({
           </div>
         </div>
         
-        {/* Chart section with fixed height */}
-        <div className="h-[600px]">
-          <div className="sticky top-24 h-full">
-            <ChartSection
-              selectedExchange={selectedExchange}
-              isLoading={isExchangesLoading}
-              chartType={chartType}
-              onChartTypeChange={setChartType}
-              onOpenModal={() => setIsChartModalOpen(true)}
-            />
+        {/* Chart section with placeholder state */}
+        <div className="relative h-[600px] transition-all duration-300">
+          <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+            {isExchangesLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="animate-pulse space-y-4 w-full p-4">
+                  <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto" />
+                  <div className="h-[400px] bg-gray-200 dark:bg-gray-700 rounded mx-auto" />
+                </div>
+              </div>
+            ) : (
+              <ChartSection
+                selectedExchange={selectedExchange}
+                isLoading={isExchangesLoading}
+                chartType={chartType}
+                onChartTypeChange={setChartType}
+                onOpenModal={() => setIsChartModalOpen(true)}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {/* Metadata section with min-height to prevent layout shift */}
-      {selectedExchange && !isExchangesLoading && (
-        <div className="min-h-[200px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
-          <MetadataDisplay 
-            data={metadata}
-            isLoading={isMetadataLoading}
-            isError={isMetadataError}
-            error={metadataError instanceof Error ? metadataError.message : undefined}
-          />
-        </div>
-      )}
+      {/* Metadata section with maintained height */}
+      <div 
+        className={`transition-all duration-300 ${
+          selectedExchange && !isExchangesLoading ? 'h-[200px]' : 'h-0'
+        }`}
+      >
+        {selectedExchange && !isExchangesLoading && (
+          <div className="h-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm overflow-hidden">
+            <MetadataDisplay 
+              data={metadata}
+              isLoading={isMetadataLoading}
+              isError={isMetadataError}
+              error={metadataError instanceof Error ? metadataError.message : undefined}
+            />
+          </div>
+        )}
+      </div>
 
+      {/* Modal chart */}
       {selectedExchange && (
         <PopupChart
           isOpen={isChartModalOpen}
