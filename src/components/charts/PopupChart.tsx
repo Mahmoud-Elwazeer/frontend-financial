@@ -22,20 +22,21 @@ export const PopupChart: React.FC<PopupChartProps> = ({
 }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] max-w-6xl max-h-[90vh] flex flex-col">
-                <ChartHeader
-                    title={title}
-                    chartType={chartType}
-                    onChartTypeChange={onChartTypeChange}
-                    onClose={onClose}
-                />
-                <div className="flex-1 p-6 min-h-0">
-                    <ChartContainer
-                        chartType={chartType}
-                        symbol={symbol}
-                    />
-                </div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] max-w-6xl max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <ChartHeader
+            title={title}
+            chartType={chartType}
+            onChartTypeChange={onChartTypeChange}
+            onClose={onClose}
+            />
+
+            {/* Content Area */}
+            <div className="flex-1 p-6 min-h-0 flex flex-col">
+            <ChartContainer chartType={chartType} symbol={symbol} />
             </div>
+        </div>
         </Modal>
+
     );
 };
