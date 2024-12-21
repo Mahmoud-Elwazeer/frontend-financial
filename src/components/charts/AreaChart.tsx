@@ -100,7 +100,7 @@ export const AreaChart: React.FC<AreaChartProps> = ({ data, isLoading, isError }
   }
 
   return (
-    <div className="relative h-screen">
+    <div className="relative">
       <div ref={chartContainerRef} className="w-full h-full" />
       <div
         ref={tooltipRef}
