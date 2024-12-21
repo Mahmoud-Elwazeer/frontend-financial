@@ -85,7 +85,6 @@ export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isErr
       };
 
       window.addEventListener('resize', handleResize);
-      
 
       return () => {
         window.removeEventListener('resize', handleResize);
@@ -107,7 +106,7 @@ export const CandleChart: React.FC<CandleChartProps> = ({ data, isLoading, isErr
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <div ref={chartContainerRef} className="w-full" />
       <div
         ref={tooltipRef}

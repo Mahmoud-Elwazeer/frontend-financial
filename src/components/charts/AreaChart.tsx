@@ -79,6 +79,7 @@ export const AreaChart: React.FC<AreaChartProps> = ({ data, isLoading, isError }
       window.addEventListener('resize', handleResize);
       handleResize(); // Initial resize
 
+
       return () => {
         window.removeEventListener('resize', handleResize);
         chart.remove();
@@ -99,7 +100,7 @@ export const AreaChart: React.FC<AreaChartProps> = ({ data, isLoading, isError }
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <div ref={chartContainerRef} className="w-full" />
       <div
         ref={tooltipRef}

@@ -22,7 +22,7 @@ export const PopupChart: React.FC<PopupChartProps> = ({
 }) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[100vw] max-w-6xl max-h-[100vh] flex flex-col">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-[90vw] max-w-6xl max-h-[90vh] flex flex-col">
                 <ChartHeader
                     title={title}
                     chartType={chartType}
