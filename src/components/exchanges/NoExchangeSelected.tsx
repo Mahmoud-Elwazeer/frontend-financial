@@ -1,7 +1,11 @@
 import React from 'react';
 import { LineChart } from 'lucide-react';
 
-export const NoExchangeSelected: React.FC = () => {
+interface NoExchangeSelectedProps {
+    message: string;
+}
+
+export const NoExchangeSelected: React.FC<NoExchangeSelectedProps> = ({message}) => {
     return (
         <div className="flex flex-col items-center justify-center h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
             <div className="flex flex-col items-center max-w-sm">
@@ -10,7 +14,7 @@ export const NoExchangeSelected: React.FC = () => {
                     No Exchange Selected
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                    Select an exchange from the list to view its charts and detailed information.
+                    {message}
                 </p>
             </div>
         </div>

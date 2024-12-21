@@ -32,7 +32,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({
     if (!selectedExchange) {
         return (
             <div className="h-[600px]">
-                <NoExchangeSelected />
+                <NoExchangeSelected  message='Select an exchange from the list to view its charts and detailed information.'/>
             </div>
         );
     }

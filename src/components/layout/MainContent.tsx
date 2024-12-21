@@ -8,6 +8,9 @@ import { getMetadata } from '../../services/api';
 import { ChartSection } from '../charts/ChartSection';
 import { CompanyMetadata } from '../../types/metadata';
 import { Candle } from '../../types/candle';
+import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
+import { NoExchangeSelected } from '../exchanges/NoExchangeSelected';
+
 
 interface MainContentProps {
   selectedExchange: Exchange | null;
@@ -83,8 +86,10 @@ export const MainContent: React.FC<MainContentProps> = ({
       </div>
 
       {/* Metadata section with min-height */}
-      <div className="min-h-[200px] bg-white dark:bg-gray-800 rounded-lg shadow-sm">
-        {selectedExchange ? (
+        <div className="min-h-[200px] bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        {isExchangesLoading ? (
+          <LoadingSpinner />
+        ) : selectedExchange ? (
           <MetadataDisplay 
             data={metadata}
             isLoading={isMetadataLoading}
@@ -92,9 +97,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             error={metadataError instanceof Error ? metadataError.message : undefined}
           />
         ) : (
-          <div className="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
-            Select an exchange to view metadata
-          </div>
+          <NoExchangeSelected message = {"Select an exchange to view metadata"}/>
         )}
       </div>
 
