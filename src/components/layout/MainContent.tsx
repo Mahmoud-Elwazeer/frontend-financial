@@ -9,7 +9,6 @@ import { ChartSection } from '../charts/ChartSection';
 import { CompanyMetadata } from '../../types/metadata';
 import { Candle } from '../../types/candle';
 
-
 interface MainContentProps {
   selectedExchange: Exchange | null;
   exchanges: Exchange[];
@@ -53,12 +52,12 @@ export const MainContent: React.FC<MainContentProps> = ({
   });
 
   return (
-    <main className="max-w-7xl mx-auto space-y-6">
-      {/* Fixed height container for the grid to prevent layout shift */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[600px]">
+    <div className="max-w-7xl mx-auto">
+      {/* Grid container with fixed heights */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Exchange list with fixed height */}
-        <div className="h-[600px]">
-          <div className="sticky top-24 h-full bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+        <div className="h-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+          <div className="h-full overflow-hidden">
             <ExchangeList
               exchanges={exchanges}
               onExchangeSelect={onExchangeSelect}
@@ -72,30 +71,32 @@ export const MainContent: React.FC<MainContentProps> = ({
         </div>
         
         {/* Chart section with fixed height */}
-        <div className="h-[600px]">
-          <div className="sticky top-24 h-full">
-            <ChartSection
-              selectedExchange={selectedExchange}
-              isLoading={isExchangesLoading}
-              chartType={chartType}
-              onChartTypeChange={setChartType}
-              onOpenModal={() => setIsChartModalOpen(true)}
-            />
-          </div>
+        <div className="h-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+          <ChartSection
+            selectedExchange={selectedExchange}
+            isLoading={isExchangesLoading}
+            chartType={chartType}
+            onChartTypeChange={setChartType}
+            onOpenModal={() => setIsChartModalOpen(true)}
+          />
         </div>
       </div>
 
-      {/* Metadata section with min-height to prevent layout shift */}
-      {selectedExchange && !isExchangesLoading && (
-        <div className="min-h-[200px] bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+      {/* Metadata section with min-height */}
+      <div className="min-h-[200px] bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+        {selectedExchange ? (
           <MetadataDisplay 
             data={metadata}
             isLoading={isMetadataLoading}
             isError={isMetadataError}
             error={metadataError instanceof Error ? metadataError.message : undefined}
           />
-        </div>
-      )}
+        ) : (
+          <div className="h-[200px] flex items-center justify-center text-gray-500 dark:text-gray-400">
+            Select an exchange to view metadata
+          </div>
+        )}
+      </div>
 
       {selectedExchange && (
         <PopupChart
@@ -107,6 +108,6 @@ export const MainContent: React.FC<MainContentProps> = ({
           onChartTypeChange={setChartType}
         />
       )}
-    </main>
+    </div>
   );
 };
