@@ -99,20 +99,16 @@ export const AreaChart: React.FC<AreaChartProps> = ({ data, isLoading, isError }
   }
 
   return (
-    <div className="relative flex-1 min-h-0">
-      {/* Chart Container */}
-      <div ref={chartContainerRef} className="w-full h-full" />
-
-      {/* Tooltip */}
+    <div className="relative">
+      <div ref={chartContainerRef} className="w-full" />
       <div
         ref={tooltipRef}
         className={`absolute hidden p-2 rounded-lg shadow-lg border z-50 ${
-          isDark
-            ? 'bg-gray-800 border-gray-700 text-gray-200'
+          isDark 
+            ? 'bg-gray-800 border-gray-700 text-gray-200' 
             : 'bg-white border-gray-200 text-gray-800'
         }`}
       />
     </div>
-
   );
 };
