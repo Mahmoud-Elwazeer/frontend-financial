@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getMetadata } from '../../services/api';
 import { ChartSection } from '../charts/ChartSection';
 import { CompanyMetadata } from '../../types/metadata';
-import { Candle } from '../../types/candle';
 import { LoadingSpinner } from '../loadingPage/LoadingSpinner';
 import { NoExchangeSelected } from '../exchanges/NoExchangeSelected';
 
@@ -15,17 +14,11 @@ import { NoExchangeSelected } from '../exchanges/NoExchangeSelected';
 interface MainContentProps {
   selectedExchange: Exchange | null;
   exchanges: Exchange[];
-  candles: Candle[];
-  metadata: CompanyMetadata | null;
   onExchangeSelect: (exchange: Exchange) => void;
   isExchangesLoading: boolean;
   isExchangesError: boolean;
   exchangesError?: string;
   favorites: string[];
-  isCandlesLoading: boolean;
-  isMetadataLoading: boolean;
-  isCandlesError: boolean;
-  isMetadataError: boolean;
 }
 
 export const MainContent: React.FC<MainContentProps> = ({
