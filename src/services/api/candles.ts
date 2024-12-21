@@ -1,17 +1,15 @@
-import { api } from './config';
+import { api, handleApiError } from './config';
 import { Candle } from '../../types/candle';
-import { ApiResponse, ApiError } from '../../types/api';
+import { ApiCandles, PaginatedResponse } from '../../types/api/responses';
+import { DateRangeParams } from '../../types/api/requests';
 import { format } from 'date-fns';
-import axios from 'axios';
 
-interface DateRange {
-  from?: Date;
-  to?: Date;
-}
-
-export const getCandles = async (symbol: string, dateRange?: DateRange) => {
+export const getCandles = async (
+  symbol: string,
+  dateRange?: { from?: Date; to?: Date }
+): Promise<Candle[]> => {
   try {
-    const params: Record<string, string> = {};
+    const params: DateRangeParams = {};
     
     if (dateRange?.from) {
       params.from = format(dateRange.from, 'yyyy-MM-dd');
@@ -21,19 +19,13 @@ export const getCandles = async (symbol: string, dateRange?: DateRange) => {
       params.to = format(dateRange.to, 'yyyy-MM-dd');
     }
 
-    const { data } = await api.get<ApiResponse<{totalItems: number; data: Candle[] }>>(
+    const { data } = await api.get<ApiCandles<PaginatedResponse<Candle>>>(
       `/candles/${symbol}`,
       { params }
     );
     
-    
-    
     return data.candles.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const apiError = error.response.data as ApiError;
-      throw new Error(apiError.message);
-    }
-    throw error;
+    throw handleApiError(error);
   }
 };

@@ -1,21 +1,12 @@
-import { api } from './config';
+import { api, handleApiError } from './config';
 import { CompanyMetadata } from '../../types/metadata';
-import { ApiResponse, ApiError } from '../../types/api';
-import axios from 'axios';
+import { ApiMetadata } from '../../types/api/responses';
 
-
-export const getMetadata = async (symbol: string) => {
+export const getMetadata = async (symbol: string): Promise<CompanyMetadata> => {
   try {
-    const { data } = await api.get<ApiResponse<{ data: CompanyMetadata[] }>>(
-      `/metadata/${symbol}`
-    );
+    const { data } = await api.get<ApiMetadata<CompanyMetadata>>(`/metadata/${symbol}`);
     return data.metadata;
-  }
-  catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const apiError = error.response.data as ApiError;
-      throw new Error(apiError.message);
-    }
-    throw error;
+  } catch (error) {
+    throw handleApiError(error);
   }
 };

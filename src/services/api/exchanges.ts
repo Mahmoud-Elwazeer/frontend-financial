@@ -1,54 +1,34 @@
-import { api } from './config';
+import { api, handleApiError } from './config';
 import { Exchange } from '../../types/exchange';
-import { ApiResponse, ApiError } from '../../types/api';
+import { PaginatedResponse, ApiExchanges, ApiExchange, ApiFilters } from '../../types/api/responses';
+import { ExchangeFilters } from '../../types/api/requests';
 import { FilterOptions } from '../../types/filters';
-import axios from 'axios';
 
-interface ExchangeFilters {
-  type?: string;
-  country?: string;
-  currency?: string;
-  symbols?: string;
-}
-
-export const getExchanges = async (filters: ExchangeFilters) => {
+export const getExchanges = async (filters: ExchangeFilters): Promise<Exchange[]> => {
   try {
-    const { data } = await api.get<ApiResponse<{ totalItems: number; data: Exchange[] }>>(
-      '/exchanges',
-      { params: filters }
-    );
+    const { data } = await api.get<ApiExchanges<PaginatedResponse<Exchange>>>('/exchanges', {
+      params: filters,
+    });
     return data.exchanges.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const apiError = error.response.data as ApiError;
-      throw new Error(apiError.message);
-    }
-  throw error;
+    throw handleApiError(error);
   }
 };
 
-export const getExchangeDetails = async (symbol: string) => {
+export const getExchangeDetails = async (symbol: string): Promise<Exchange> => {
   try {
-    const { data } = await api.get<ApiResponse<Exchange>>(`/exchanges/${symbol}`);
+    const { data } = await api.get<ApiExchange<Exchange>>(`/exchanges/${symbol}`);
     return data.exchange;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const apiError = error.response.data as ApiError;
-      throw new Error(apiError.message);
-    }
-  throw error;
+    throw handleApiError(error);
   }
 };
 
 export const getFilterOptions = async (): Promise<FilterOptions> => {
   try {
-    const { data } = await api.get<ApiResponse<{ filters: FilterOptions }>>('/exchanges/filters');
+    const { data } = await api.get<ApiFilters<FilterOptions >>('/exchanges/filters');
     return data.filters;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.data) {
-      const apiError = error.response.data as ApiError;
-      throw new Error(apiError.message);
-    }
-  throw error;
+    throw handleApiError(error);
   }
 };
